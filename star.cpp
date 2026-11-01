@@ -7,7 +7,7 @@ Star::Star(size_t sourceId, double rightAscension, double declination) {
     _declination = declination;
 }
 
-double Star::getAltitude(const double& latitude, const double& longitude, chrono::system_clock::time_point time) const {
+double Star::getAltitude(const double& LATITUDE, const double& LONGITUDE, const chrono::system_clock::time_point& TIME) const {
 
 }
 

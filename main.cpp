@@ -10,7 +10,7 @@ int main() {
         return 1;
     }
 
-    // Set version to 3.2 Core Profile
+    // Set OpenGL version to 3.2 Core Profile
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -18,19 +18,20 @@ int main() {
 
     // Handle scaling for high resolution displays
     float displayScale = SDL_GetDisplayContentScale(SDL_GetPrimaryDisplay());
-    SDL_WindowFlags window_flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN | SDL_WINDOW_HIGH_PIXEL_DENSITY;
-    SDL_Window* window = SDL_CreateWindow("Night Sky", (int)(1280 * displayScale), (int)(720 * displayScale), window_flags);
+    // Create a window with SDL
+    SDL_WindowFlags windowFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIDDEN | SDL_WINDOW_HIGH_PIXEL_DENSITY;
+    SDL_Window* window = SDL_CreateWindow("Night Sky", (int)(1280 * displayScale), (int)(720 * displayScale), windowFlags);
     if (window == nullptr) {
         printf("Error: SDL_CreateWindow(): %s\n", SDL_GetError());
         return 1;
     }
-    SDL_GLContext gl_context = SDL_GL_CreateContext(window);
-    if (gl_context == nullptr) {
+    SDL_GLContext glContext = SDL_GL_CreateContext(window);
+    if (glContext == nullptr) {
         printf("Error: SDL_GL_CreateContext(): %s\n", SDL_GetError());
         return 1;
     }
 
-    SDL_GL_MakeCurrent(window, gl_context);
+    SDL_GL_MakeCurrent(window, glContext);
     SDL_GL_SetSwapInterval(1); // Enable vsync
     SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
     SDL_ShowWindow(window);
@@ -39,9 +40,8 @@ int main() {
     InputHelper ioHelper;
     vector<Star> stars = ioHelper.loadStarsFromCSV("gaiadr3.csv");
 
-    // Main loop
+    // Draw loop
     bool done = false;
-
     while (!done) {
         // Input handling
         SDL_Event event;
@@ -69,7 +69,7 @@ int main() {
     }
 
     // Cleanup
-    SDL_GL_DestroyContext(gl_context);
+    SDL_GL_DestroyContext(glContext);
     SDL_DestroyWindow(window);
     SDL_Quit();
 
