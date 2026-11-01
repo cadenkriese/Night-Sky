@@ -1,0 +1,15 @@
+# Data
+gaiadr3.csv
+
+# Object Files & Binaries
+*.o
+Night_Sky
+
+# Visual Studio Code
+.vscode
+
+# macOS
+.DS_Store
+
+# Dependencies
+dependencies
