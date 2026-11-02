@@ -6,6 +6,8 @@
 #include <iostream>
 #include "renderer.h"
 
+using namespace std;
+
 void makeWindowWithOpenGL(SDL_Window*& window, SDL_GLContext& glContext) {
     // Set OpenGL version to 3.3 Core Profile
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);

@@ -1,8 +1,12 @@
 #include "input_helper.h"
 
 #include <cassert>
+#include <chrono>
+#include <ctime>
 #include <fstream>
 #include <iostream>
+
+using namespace std;
 
 vector<string> InputHelper::string_tokenize(const string& STR, const char& DELIMINATOR) {
     vector<string> result;
@@ -33,7 +37,7 @@ vector<Star> InputHelper::loadStarsFromCSV(const string& fileName) {
     string firstLine;
     getline(dataIn, firstLine);
     const vector<string> firstLineTokens = string_tokenize(firstLine, ',');
-    // Intentionally crash on invalid data TODO review this behavior
+    // TODO use exceptions
     assert(firstLineTokens[0] == "source_id");
     assert(firstLineTokens[1] == "ra");
     assert(firstLineTokens[2] == "dec");
@@ -50,4 +54,22 @@ vector<Star> InputHelper::loadStarsFromCSV(const string& fileName) {
     }
 
     return stars;
+}
+
+chrono::system_clock::time_point InputHelper::promptForTime() {
+    tm tm{};
+    while (true) {
+        cout << "Enter a date and time in your timezone (YYYY-mm-dd HH:MM) > ";
+        if (cin >> get_time(&tm, "%Y-%m-%d %H:%M") && !cin.fail()) {
+            break;
+        }
+        
+        cin.clear();
+        int badChar; // clear out rest of input line
+        do {
+            badChar = cin.get(); 
+        } while(badChar != '\n');
+    }
+
+    return chrono::system_clock::from_time_t(mktime(&tm));
 }

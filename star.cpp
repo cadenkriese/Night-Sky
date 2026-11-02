@@ -1,5 +1,9 @@
 #include "star.h"
 #include <iomanip>
+#include <iostream>
+#include <chrono>
+
+using namespace std;
 
 Star::Star(size_t sourceId, double rightAscension, double declination) {
     _sourceId = sourceId;
@@ -8,7 +12,7 @@ Star::Star(size_t sourceId, double rightAscension, double declination) {
 }
 
 double Star::getAltitude(const double& LATITUDE, const double& LONGITUDE, const chrono::system_clock::time_point& TIME) const {
-
+    
 }
 
 size_t Star::getSourceID() const {

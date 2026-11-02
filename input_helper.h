@@ -2,16 +2,15 @@
 #define INPUT_HELPER_H
 
 #include <chrono>
+#include <vector>
 #include "star.h"
-
-using namespace std;
 
 class InputHelper {
 private:
-    vector<string> string_tokenize(const string&, const char&);
+    std::vector<std::string> string_tokenize(const std::string&, const char&);
 public:
-    // chrono::duration promptForTime();
-    vector<Star> loadStarsFromCSV(const string&);
+    std::chrono::system_clock::time_point promptForTime();
+    std::vector<Star> loadStarsFromCSV(const std::string&);
 };
 
 #endif // INPUT_HELPER_H
