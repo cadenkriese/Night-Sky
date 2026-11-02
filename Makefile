@@ -1,6 +1,6 @@
 PROJECT = Night_Sky
-SRC_FILES = main.cpp star.cpp input_helper.cpp
-H_FILES = star.h input_helper.h
+SRC_FILES = main.cpp input_helper.cpp star.cpp renderer.cpp
+H_FILES = star.h input_helper.h renderer.h
 REZ_FILES = gaiadr3.csv dependencies
 USERNAME = caden_kriese
 
@@ -85,6 +85,7 @@ submission:
 .PHONY: all clean depend submission
 
 # DEPENDENCIES
-main.o: main.cpp star.h input_helper.h 
-star.o: star.cpp star.h
+main.o: main.cpp input_helper.h star.h renderer.h
 input_helper.o: input_helper.cpp input_helper.h star.h
+star.o: star.cpp star.h
+renderer.o: renderer.cpp renderer.h
