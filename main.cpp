@@ -53,8 +53,8 @@ int main() {
 
     vector<float> vertices = {
         -0.5f, -0.5f, 0.f,
-        0.5f, -0.5f, 0.f,
-        0.0f,  0.5f, 0.f,
+         0.5f, -0.5f, 0.f,
+         0.0f,  0.5f, 0.f,
     };
     Renderer renderer(window, vertices);
     
@@ -70,13 +70,13 @@ int main() {
             if (event.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED && event.window.windowID == SDL_GetWindowID(window)) {
                 done = true;
             }
-            // Update window dimensions when a resize occurs
+            // Update OpenGL viewport dimensions when a resize occurs
             if (event.type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED && event.window.windowID == SDL_GetWindowID(window)) {
-                // SDL_GetWindowSizeInPixels(window, &windowWidth, &windowHeight);
+                renderer.resizeViewport();
             }
         }
 
-        // Reduce frame rate when the window is minimized
+        // Skip drawing when the window is minimized
         if (SDL_GetWindowFlags(window) & SDL_WINDOW_MINIMIZED) {
             SDL_Delay(10);
             continue;

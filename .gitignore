@@ -1,15 +1,17 @@
+# Build Artifacts
+*.o
+Night_Sky
+Makefile.bak
+
 # Data
 gaiadr3.csv
 
-# Object Files & Binaries
-*.o
-Night_Sky
-
-# Visual Studio Code
-.vscode
+# Dependencies
+dependencies
 
 # macOS
 .DS_Store
 
-# Dependencies
-dependencies
+# Visual Studio Code Config
+.vscode
+
