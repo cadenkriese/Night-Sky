@@ -1,10 +1,12 @@
 #include "renderer.h"
 
 #define GL_GLEXT_PROTOTYPES
-#include <SDL3/SDL.h>
-#include <SDL3/SDL_opengl.h>
+
 #include <iostream>
 #include <vector>
+
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_opengl.h>
 
 using namespace std;
 

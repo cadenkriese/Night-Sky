@@ -1,9 +1,8 @@
-#include "input_helper.h"
-
-#define GL_GLEXT_PROTOTYPES
-#include <SDL3/SDL.h>
-#include <SDL3/SDL_opengl.h>
 #include <iostream>
+
+#include <SDL3/SDL.h>
+
+#include "input_helper.h"
 #include "renderer.h"
 
 using namespace std;

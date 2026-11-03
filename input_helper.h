@@ -2,7 +2,9 @@
 #define INPUT_HELPER_H
 
 #include <chrono>
+#include <string>
 #include <vector>
+
 #include "star.h"
 
 class InputHelper {
