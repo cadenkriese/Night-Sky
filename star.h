@@ -4,6 +4,8 @@
 #include <chrono>
 #include <iostream>
 
+#include "renderable_star.h"
+
 class Star {
 public:
     /**
@@ -12,12 +14,13 @@ public:
     Star(size_t, double, double);
 
     /**
-     * @brief calculates the altitude of this star using local sidereal time from the given time and the given latitude.
+     * @brief calculates the altitude and azimuth of this star using local sidereal time from the given time and the given latitude and returns it in a RenderableStar.
      * 
-     * @param latitude the latitude to use for the local sidereal time calculation
-     * @param time the time point to use for the local sidereal time calculation
+     * @param LATITUDE the latitude of the observer
+     * @param LONGITUDE the longitude of the observer from -180º to +180º
+     * @param TIME the time of observation
      */
-    double getAltitude(const double& latitude, const double& longitude, const std::chrono::system_clock::time_point& time) const;
+    RenderableStar getRenderableStar(const double& LATITUDE, const double& LONGITUDE, const std::chrono::system_clock::time_point& TIME) const;
     
     size_t getSourceID() const;
     double getRightAscension() const;
