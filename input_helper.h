@@ -13,7 +13,7 @@ private:
     /**
      * Splits a string into substrings using a deliminator
      */
-    std::vector<std::string> string_tokenize(const std::string&, const char&);
+    std::vector<std::string> tokenizeString(const std::string&, const char&);
 
     /**
      * Parses a location coordinate, like latitude or longitude in degrees, using a trailing letter to indicate the positive direction
@@ -41,6 +41,11 @@ public:
      * @brief loads the given path and parses it as a CSV with columns source_id,ra,dec
      */
     std::vector<Star> loadStarsFromCSV(const std::string&);
+
+    /**
+     * @brief reads the entire file at the given path into a single string
+     */
+    std::string readFile(const std::string&);
 };
 
 #endif // INPUT_HELPER_H

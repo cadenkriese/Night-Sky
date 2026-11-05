@@ -13,7 +13,7 @@
 
 using namespace std;
 
-vector<string> InputHelper::string_tokenize(const string& STR, const char& DELIMINATOR) {
+vector<string> InputHelper::tokenizeString(const string& STR, const char& DELIMINATOR) {
     vector<string> result;
     size_t tokenStart = 0;
     size_t currentDeliminator = STR.find(DELIMINATOR);
@@ -79,7 +79,7 @@ vector<Star> InputHelper::loadStarsFromCSV(const string& fileName) {
     
     string firstLine;
     getline(dataIn, firstLine);
-    const vector<string> firstLineTokens = string_tokenize(firstLine, ',');
+    const vector<string> firstLineTokens = tokenizeString(firstLine, ',');
     // TODO use exceptions
     assert(firstLineTokens[0] == "source_id");
     assert(firstLineTokens[1] == "ra");
@@ -87,7 +87,7 @@ vector<Star> InputHelper::loadStarsFromCSV(const string& fileName) {
     
     string currentLine;
     while (getline(dataIn, currentLine)) {
-        vector<string> tokens = string_tokenize(currentLine, ',');
+        vector<string> tokens = tokenizeString(currentLine, ',');
         size_t sourceId = stoull(tokens[0]);
         double rightAscension = stod(tokens[1]);
         double declination = stod(tokens[2]);
@@ -99,6 +99,23 @@ vector<Star> InputHelper::loadStarsFromCSV(const string& fileName) {
     return stars;
 }
 
+string InputHelper::readFile(const string& fileName) {
+    ifstream dataIn(fileName);
+    
+    if (dataIn.fail()) {
+        cerr << "Invalid file path: " << fileName;
+        return "";
+    }
+
+    string output;
+    string currentLine;
+    while (getline(dataIn, currentLine)) {
+        output.append(currentLine + "\n");
+    }
+
+    return output;
+}
+
 Location InputHelper::promptForLocation() {
     string input;
     double latitude;
@@ -107,7 +124,7 @@ Location InputHelper::promptForLocation() {
     while (true) {
         cout << "Enter a latitude and longitude in the form 39.74974N 105.22252W > ";
         if (getline(cin, input)) {
-            vector<string> tokens = string_tokenize(input, ' ');
+            vector<string> tokens = tokenizeString(input, ' ');
             if (tokens.size() != 2) {
                 continue; // Require exactly two arguments separated by a space
             }
