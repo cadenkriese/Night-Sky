@@ -5,6 +5,7 @@
 
 #include <SDL3/SDL_video.h>
 
+#include "camera.h"
 #include "renderable_star.h"
 
 class Renderer {
@@ -16,8 +17,9 @@ public:
      * @brief renders a frame using OpenGL and swaps it to the stored SDL_Window*
      * 
      * @param STARS the stars to be drawn
+     * @param CAMERA the camera representing the observer
      */
-    void draw(const std::vector<RenderableStar>& STARS);
+    void draw(const std::vector<RenderableStar>& STARS, const Camera& CAMERA);
 
     /**
      * @brief updates the viewport to match the dimensions of the stored SDL_Window*

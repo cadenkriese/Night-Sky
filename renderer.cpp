@@ -6,12 +6,12 @@
 #include <vector>
 
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_opengl.h>
 
 #include "input_helper.h"
+#include "camera.h"
 
 using namespace std;
 
@@ -29,7 +29,7 @@ Renderer::~Renderer() {
     glDeleteProgram(_shaderProgram);
 }
 
-void Renderer::draw(const vector<RenderableStar>& STARS) {
+void Renderer::draw(const vector<RenderableStar>& STARS, const Camera& CAMERA) {
     glViewport(0, 0, _viewportWidth, _viewportHeight);
 
     glClearColor(0.f, 0.f, 0.f, 1.f);
@@ -37,9 +37,7 @@ void Renderer::draw(const vector<RenderableStar>& STARS) {
 
     glUseProgram(_shaderProgram);
 
-    const float time = static_cast<float>(SDL_GetTicks()) / 7500.0f;
-    glm::mat4 view;
-    view = glm::lookAt(glm::vec3(0.0, 0.0, 0.0), glm::vec3(sin(time), 0.0, cos(time)), glm::vec3(0.0, 1.0, 0.0));
+    glm::mat4 view = CAMERA.getView();
     int viewLoc = glGetUniformLocation(_shaderProgram, "view");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
@@ -51,7 +49,7 @@ void Renderer::draw(const vector<RenderableStar>& STARS) {
     glBufferSubData(GL_ARRAY_BUFFER, 0, (long) (STARS.size() * sizeof(RenderableStar)), STARS.data());
 
     glBindVertexArray(_vertexArrayObject);
-    glPointSize(10.f);
+    glPointSize(7.f);
     glDrawArrays(GL_POINTS, 0, (int) STARS.size());
 
     SDL_GL_SwapWindow(_window);

@@ -4,8 +4,11 @@
 
 #include "input_helper.h"
 #include "renderer.h"
+#include "camera.h"
 
 using namespace std;
+
+const float MOUSE_SENSITIVITY = 0.005f;
 
 void makeWindowWithOpenGL(SDL_Window*& window, SDL_GLContext& glContext) {
     // Set OpenGL version to 3.3 Core Profile
@@ -65,6 +68,8 @@ int main() {
     // TODO handle exceptions
 
     Renderer renderer(window);
+    Camera camera;
+    bool relativeMouseMode = false; // Is the mouse captured and being used to control the camera
     
     // Draw loop
     bool done = false;
@@ -75,12 +80,24 @@ int main() {
             if (event.type == SDL_EVENT_QUIT) {
                 done = true;
             }
-            if (event.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED && event.window.windowID == SDL_GetWindowID(window)) {
+            if (event.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED) {
                 done = true;
             }
             // Update OpenGL viewport dimensions when a resize occurs
-            if (event.type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED && event.window.windowID == SDL_GetWindowID(window)) {
+            if (event.type == SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED) {
                 renderer.resizeViewport();
+            }
+            if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
+                relativeMouseMode = !relativeMouseMode;
+                SDL_SetWindowRelativeMouseMode(window, relativeMouseMode);
+            }
+            if (event.type == SDL_EVENT_KEY_DOWN && event.key.key == SDLK_ESCAPE) {
+                relativeMouseMode = false;
+                SDL_SetWindowRelativeMouseMode(window, relativeMouseMode);
+            }
+            if (event.type == SDL_EVENT_MOUSE_MOTION && relativeMouseMode) {
+                camera.setYaw(camera.getYaw() + MOUSE_SENSITIVITY * event.motion.xrel);
+                camera.setPitch(camera.getPitch() - MOUSE_SENSITIVITY * event.motion.yrel);
             }
         }
 
@@ -91,7 +108,7 @@ int main() {
         }
 
         // Draw
-        renderer.draw(visibleStars);
+        renderer.draw(visibleStars, camera);
     }
 
     // Cleanup
