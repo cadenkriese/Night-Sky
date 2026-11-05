@@ -1,6 +1,6 @@
 PROJECT = Night_Sky
-SRC_FILES = main.cpp input_helper.cpp renderable_star.cpp renderer.cpp star.cpp 
-H_FILES = star.h input_helper.h renderer.h renderable_star.h
+SRC_FILES = input_helper.cpp location.cpp main.cpp renderable_star.cpp renderer.cpp star.cpp 
+H_FILES = input_helper.h location.h renderable_star.h renderer.h star.h
 REZ_FILES = gaiadr3.csv dependencies
 USERNAME = caden_kriese
 

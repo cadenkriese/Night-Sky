@@ -1,9 +1,11 @@
 #include "star.h"
 
 #include <chrono>
+#include <cmath>
 #include <iomanip>
 #include <iostream>
 
+#include "location.h"
 #include "renderable_star.h"
 
 using namespace std;
@@ -14,7 +16,7 @@ Star::Star(size_t sourceId, double rightAscension, double declination) {
     _declination = declination;
 }
 
-RenderableStar Star::getRenderableStar(const double& LATITUDE, const double& LONGITUDE, const chrono::system_clock::time_point& TIME) const {
+RenderableStar Star::getRenderableStar(const Location& LOCATION, const chrono::system_clock::time_point& TIME) const {
     // Sidereal time equation from "Computing Approximate Sidereal Time"
     // Astronomical Applications Department, U.S. Naval Observatory
     // https://aa.usno.navy.mil/faq/GAST
@@ -36,9 +38,9 @@ RenderableStar Star::getRenderableStar(const double& LATITUDE, const double& LON
     // Astronomical Applications Department, U.S. Naval Observatory
     // https://aa.usno.navy.mil/faq/alt_az
 
-    double localHourAngle = greenwichMeanSiderealTime * 15.0 - _rightAscension + LONGITUDE;
+    double localHourAngle = greenwichMeanSiderealTime * 15.0 - _rightAscension + LOCATION.getLatitude();
     localHourAngle = localHourAngle / 180.0 * M_PI; // Convert to radians
-    double latitudeRadians = LATITUDE / 180.0 * M_PI;
+    double latitudeRadians = LOCATION.getLongitude() / 180.0 * M_PI;
     double declinationRadians = _declination / 180.0 * M_PI;
 
     double altitude = asin(cos(localHourAngle) * cos(declinationRadians) * cos(latitudeRadians) + sin(declinationRadians) * sin(latitudeRadians));

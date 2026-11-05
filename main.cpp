@@ -42,14 +42,27 @@ int main() {
         return 1;
     }
 
+    // Prompt for input
+    InputHelper ioHelper;
+    Location location = ioHelper.promptForLocation();
+    chrono::system_clock::time_point time = ioHelper.promptForTime();
+    vector<Star> stars = ioHelper.loadStarsFromCSV("gaiadr3.csv");
+
+    // Convert stars to renderable ones, filter for stars above the horizon (altitude of 0º)
+    vector<RenderableStar> visibleStars;
+    
+    for (size_t i = 0; i < stars.size(); i++) {
+        RenderableStar renderableStar = stars.at(i).getRenderableStar(location, time);
+        if (renderableStar.getAltitude() > 0) {
+            visibleStars.push_back(renderableStar);
+        }
+    }
+
+    // Make a window
     SDL_Window* window;
     SDL_GLContext glContext;
     makeWindowWithOpenGL(window, glContext);
     // TODO handle exceptions
-
-    // State
-    InputHelper ioHelper; // maybe rename to star catalog and add a filter method?
-    vector<Star> stars = ioHelper.loadStarsFromCSV("gaiadr3.csv");
 
     vector<float> vertices = {
         -0.5f, -0.5f, 0.f,

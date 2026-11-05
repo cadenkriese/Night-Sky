@@ -4,6 +4,7 @@
 #include <chrono>
 #include <iostream>
 
+#include "location.h"
 #include "renderable_star.h"
 
 class Star {
@@ -16,11 +17,10 @@ public:
     /**
      * @brief calculates the altitude and azimuth of this star using local sidereal time from the given time and the given latitude and returns it in a RenderableStar.
      * 
-     * @param LATITUDE the latitude of the observer
-     * @param LONGITUDE the longitude of the observer from -180º to +180º
+     * @param LOCATION the location of the observer
      * @param TIME the time of observation
      */
-    RenderableStar getRenderableStar(const double& LATITUDE, const double& LONGITUDE, const std::chrono::system_clock::time_point& TIME) const;
+    RenderableStar getRenderableStar(const Location& LOCATION, const std::chrono::system_clock::time_point& TIME) const;
     
     size_t getSourceID() const;
     double getRightAscension() const;
