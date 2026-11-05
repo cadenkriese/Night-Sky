@@ -3,12 +3,12 @@
 
 class RenderableStar {
 public:
-    RenderableStar(double, double);
-    double getAltitude() const;
-    double getAzimuth() const;
+    RenderableStar(float, float);
+    float getAltitude() const;
+    float getAzimuth() const;
 private:
-    double _altitude;
-    double _azimuth;
+    const float _ALTITUDE;
+    const float _AZIMUTH;
 };
 
 #endif // RENDERABLE_STAR_H

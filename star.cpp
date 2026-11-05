@@ -38,14 +38,15 @@ RenderableStar Star::getRenderableStar(const Location& LOCATION, const chrono::s
     // Astronomical Applications Department, U.S. Naval Observatory
     // https://aa.usno.navy.mil/faq/alt_az
 
-    double localHourAngle = greenwichMeanSiderealTime * 15.0 - _rightAscension + LOCATION.getLatitude();
+    double localHourAngle = greenwichMeanSiderealTime * 15.0 - _rightAscension + LOCATION.getLongitude();
     localHourAngle = localHourAngle / 180.0 * M_PI; // Convert to radians
-    double latitudeRadians = LOCATION.getLongitude() / 180.0 * M_PI;
+    double latitudeRadians = LOCATION.getLatitude() / 180.0 * M_PI;
     double declinationRadians = _declination / 180.0 * M_PI;
 
     double altitude = asin(cos(localHourAngle) * cos(declinationRadians) * cos(latitudeRadians) + sin(declinationRadians) * sin(latitudeRadians));
     double azimuth = atan2(-sin(localHourAngle), tan(declinationRadians) * cos(latitudeRadians) - sin(latitudeRadians) * cos(localHourAngle));
-    return RenderableStar(altitude, azimuth);
+    // Cast to float to reduce memory usage and increase speed on GPU
+    return RenderableStar((float) altitude, (float) azimuth);
 }
 
 size_t Star::getSourceID() const {

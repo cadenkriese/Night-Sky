@@ -13,6 +13,8 @@ OBJECTS = $(SRC_FILES:.cpp=.o)
 
 ARCHIVE_EXTENSION = zip
 
+GLM_PATH = dependencies/glm
+
 LIBS = -lSDL3
 
 ifeq ($(shell echo "Windows"), "Windows")
@@ -62,7 +64,7 @@ $(TARGET): $(OBJECTS)
 	$(CXX) -o $@ $^ $(RPATH) -L$(LIB_PATH) $(LIBS)
 
 .cpp.o:
-	$(CXX) $(CPPVERSION) $(CXXFLAGS_DEBUG) $(CXXFLAGS_WARN) -o $@ -c $< -I$(INC_PATH)
+	$(CXX) $(CPPVERSION) $(CXXFLAGS_DEBUG) $(CXXFLAGS_WARN) -o $@ -c $< -I$(INC_PATH) -I$(GLM_PATH)
 
 clean:
 	$(DEL) $(TARGET) $(OBJECTS)

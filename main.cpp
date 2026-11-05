@@ -64,12 +64,7 @@ int main() {
     makeWindowWithOpenGL(window, glContext);
     // TODO handle exceptions
 
-    vector<float> vertices = {
-        -0.5f, -0.5f, 0.f,
-         0.5f, -0.5f, 0.f,
-         0.0f,  0.5f, 0.f,
-    };
-    Renderer renderer(window, vertices);
+    Renderer renderer(window);
     
     // Draw loop
     bool done = false;
@@ -96,7 +91,7 @@ int main() {
         }
 
         // Draw
-        renderer.draw();
+        renderer.draw(visibleStars);
     }
 
     // Cleanup

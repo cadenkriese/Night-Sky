@@ -5,15 +5,19 @@
 
 #include <SDL3/SDL_video.h>
 
+#include "renderable_star.h"
+
 class Renderer {
 public:
-    Renderer(SDL_Window*, std::vector<float>);
+    Renderer(SDL_Window*);
     ~Renderer();
     
     /**
      * @brief renders a frame using OpenGL and swaps it to the stored SDL_Window*
+     * 
+     * @param STARS the stars to be drawn
      */
-    void draw();
+    void draw(const std::vector<RenderableStar>& STARS);
 
     /**
      * @brief updates the viewport to match the dimensions of the stored SDL_Window*
@@ -27,7 +31,6 @@ private:
     unsigned int _vertexBufferObject;
     unsigned int _vertexArrayObject;
     unsigned int _shaderProgram;
-    const std::vector<float> _vertices;
 
     void compileShaders();
     void makeBuffers();

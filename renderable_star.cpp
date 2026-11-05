@@ -1,11 +1,11 @@
 #include "renderable_star.h"
 
-RenderableStar::RenderableStar(double altitude, double azimuth) : _altitude(altitude), _azimuth(azimuth) {}
+RenderableStar::RenderableStar(float altitude, float azimuth) : _ALTITUDE(altitude), _AZIMUTH(azimuth) {}
 
-double RenderableStar::getAltitude() const {
-    return _altitude;
+float RenderableStar::getAltitude() const {
+    return _ALTITUDE;
 }
 
-double RenderableStar::getAzimuth() const {
-    return _azimuth;
+float RenderableStar::getAzimuth() const {
+    return _AZIMUTH;
 }
