@@ -8,7 +8,7 @@
 
 using namespace std;
 
-const float MOUSE_SENSITIVITY = 0.005f;
+const float MOUSE_SENSITIVITY = 0.003f;
 
 void makeWindowWithOpenGL(SDL_Window*& window, SDL_GLContext& glContext) {
     // Set OpenGL version to 3.3 Core Profile

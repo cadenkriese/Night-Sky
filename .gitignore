@@ -5,6 +5,7 @@ Makefile.bak
 
 # Data
 gaiadr3.csv
+gaiadr3-old.csv
 
 # Dependencies
 dependencies

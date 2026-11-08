@@ -15,11 +15,14 @@
 
 using namespace std;
 
+const float VERTICAL_FOV = 45.f; // In degrees
+
 Renderer::Renderer(SDL_Window* window) : _window(window) {
     SDL_GetWindowSizeInPixels(window, &_viewportWidth, &_viewportHeight);
 
-    compileShaders();
+    makeShaderProgram();
     makeBuffers();
+    glEnable(GL_PROGRAM_POINT_SIZE); // Allow modifying point size from vertex shader
 }
 
 Renderer::~Renderer() {
@@ -41,7 +44,7 @@ void Renderer::draw(const vector<RenderableStar>& STARS, const Camera& CAMERA) {
     int viewLoc = glGetUniformLocation(_shaderProgram, "view");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float) _viewportWidth / (float) _viewportHeight, 0.1f, 100.0f);
+    glm::mat4 projection = glm::perspective(glm::radians(VERTICAL_FOV), (float) _viewportWidth / (float) _viewportHeight, 0.1f, 100.0f);
     int projLoc = glGetUniformLocation(_shaderProgram, "projection");
     glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
@@ -49,7 +52,6 @@ void Renderer::draw(const vector<RenderableStar>& STARS, const Camera& CAMERA) {
     glBufferSubData(GL_ARRAY_BUFFER, 0, (long) (STARS.size() * sizeof(RenderableStar)), STARS.data());
 
     glBindVertexArray(_vertexArrayObject);
-    glPointSize(7.f);
     glDrawArrays(GL_POINTS, 0, (int) STARS.size());
 
     SDL_GL_SwapWindow(_window);
@@ -59,35 +61,29 @@ void Renderer::resizeViewport() {
     SDL_GetWindowSizeInPixels(_window, &_viewportWidth, &_viewportHeight);
 }
 
-void Renderer::compileShaders() {
+unsigned int Renderer::compileShader(string file, GLenum type) {
     InputHelper inputHelper;
-
-    const string vertexShaderSource = inputHelper.readFile("shaders/star.vert");
-    const char* vertexShaderSourceCStr = vertexShaderSource.c_str();
-    unsigned int vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSourceCStr, NULL);
-    glCompileShader(vertexShader);
+    const string shaderSource = inputHelper.readFile(file);
+    const char* shaderSourceCStr = shaderSource.c_str();
+    unsigned int shader;
+    shader = glCreateShader(type);
+    glShaderSource(shader, 1, &shaderSourceCStr, NULL);
+    glCompileShader(shader);
 
     int success;
     char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if(!success) {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        glGetShaderInfoLog(shader, 512, NULL, infoLog);
         cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << endl;
     }
 
-    const string fragmentShaderSource = inputHelper.readFile("shaders/star.frag");
-    const char* fragmentShaderSourceCStr = fragmentShaderSource.c_str();
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSourceCStr, NULL);
-    glCompileShader(fragmentShader);
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if(!success) {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << endl;
-    }
+    return shader;
+}
+
+void Renderer::makeShaderProgram() {
+    unsigned int vertexShader = compileShader("shaders/star.vert", GL_VERTEX_SHADER);
+    unsigned int fragmentShader = compileShader("shaders/star.frag", GL_FRAGMENT_SHADER);
 
     _shaderProgram = glCreateProgram();
 
@@ -95,6 +91,8 @@ void Renderer::compileShaders() {
     glAttachShader(_shaderProgram, fragmentShader);
     glLinkProgram(_shaderProgram);
 
+    int success;
+    char infoLog[512];
     glGetProgramiv(_shaderProgram, GL_LINK_STATUS, &success);
     if(!success) {
         glGetProgramInfoLog(_shaderProgram, 512, NULL, infoLog);
@@ -115,6 +113,13 @@ void Renderer::makeBuffers() {
 
     // TODO 6,764 is a hardcoded count from csv
     glBufferData(GL_ARRAY_BUFFER, (long) (6764 * sizeof(RenderableStar)), NULL, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(RenderableStar), (void*)0);
+
+    // Vertex buffer structure
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(RenderableStar), (void*) 0);               // Altitude & Azimuth
+    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(RenderableStar), (void*) (2 * sizeof(float))); // Magnitude
+    glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(RenderableStar), (void*) (3 * sizeof(float))); // Color
+
     glEnableVertexAttribArray(0); 
+    glEnableVertexAttribArray(1); 
+    glEnableVertexAttribArray(2);
 }

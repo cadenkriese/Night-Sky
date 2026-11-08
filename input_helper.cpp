@@ -84,6 +84,8 @@ vector<Star> InputHelper::loadStarsFromCSV(const string& fileName) {
     assert(firstLineTokens[0] == "source_id");
     assert(firstLineTokens[1] == "ra");
     assert(firstLineTokens[2] == "dec");
+    assert(firstLineTokens[3] == "phot_g_mean_mag");
+    assert(firstLineTokens[4] == "bp_rp");
     
     string currentLine;
     while (getline(dataIn, currentLine)) {
@@ -91,8 +93,10 @@ vector<Star> InputHelper::loadStarsFromCSV(const string& fileName) {
         size_t sourceId = stoull(tokens[0]);
         double rightAscension = stod(tokens[1]);
         double declination = stod(tokens[2]);
+        double magnitude = stod(tokens[3]);
+        double color = stod(tokens[4]);
         
-        Star star(sourceId, rightAscension, declination);
+        Star star(sourceId, rightAscension, declination, magnitude, color);
         stars.push_back(star);
     }
     

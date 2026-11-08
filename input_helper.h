@@ -11,12 +11,12 @@
 class InputHelper {
 private:
     /**
-     * Splits a string into substrings using a deliminator
+     * @brief Splits a string into substrings using a deliminator
      */
     std::vector<std::string> tokenizeString(const std::string&, const char&);
 
     /**
-     * Parses a location coordinate, like latitude or longitude in degrees, using a trailing letter to indicate the positive direction
+     * @brief Parses a location coordinate, like latitude or longitude in degrees, using a trailing letter to indicate the positive direction
      * 
      * @param INPUT the string to be parsed
      * @param POSITIVE_DIRECTION the trailing character that, if found, indicates the coordinate is positive.

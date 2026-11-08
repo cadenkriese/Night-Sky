@@ -12,7 +12,7 @@ public:
     /**
      * @brief constructs a star with a given source id, right ascension and declination.
      */
-    Star(size_t, double, double);
+    Star(size_t, double, double, double, double);
 
     /**
      * @brief calculates the altitude and azimuth of this star using local sidereal time from the given time and the given latitude and returns it in a RenderableStar.
@@ -29,6 +29,8 @@ private:
     size_t _sourceId;
     double _rightAscension;
     double _declination;
+    double _magnitude;
+    double _color;
 };
 
 std::ostream& operator<<(std::ostream&, const Star&);
