@@ -23,6 +23,8 @@ Renderer::Renderer(SDL_Window* window) : _window(window) {
     makeShaderProgram();
     makeBuffers();
     glEnable(GL_PROGRAM_POINT_SIZE); // Allow modifying point size from vertex shader
+    glEnable(GL_BLEND);              // Enable blending to let overlapping stars accumulate light
+    glBlendFunc(GL_ONE, GL_ONE);     // Even (1:1) blending
 }
 
 Renderer::~Renderer() {

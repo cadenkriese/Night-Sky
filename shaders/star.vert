@@ -11,7 +11,7 @@ uniform mat4 view;
 uniform mat4 projection;
 
 const float REFERENCE_MAGNITUDE = 6.f;
-const float REFERENCE_SIZE = 2.f;
+const float REFERENCE_SIZE = 6.f;
 
 void main() {
     // Spherical to cartesian conversion, except I measure altitude from the horizon
@@ -30,7 +30,7 @@ void main() {
     );
 
     float size = REFERENCE_SIZE * pow(10.f, -0.2*(magnitude-REFERENCE_MAGNITUDE));
-    gl_PointSize = max(size, 4.f);
+    gl_PointSize = max(size, 6.f);
 
     vTemperature = temperature;
     vPointSize = gl_PointSize;
